@@ -17,8 +17,6 @@ const scavLootLimitCat = require("../db/bots/loadouts/scavs/scavLootLimitCat.jso
 const PMCLootLimitCat = require("../db/bots/loadouts/PMCs/PMCLootLimitCat.json");
 const botHealth = require("../db/bots/botHealth.json");
 const rmBotConfig = require("../db/bots/botconfig.json");
-const USECNames = require("../db/bots/names/USECNames.json");
-const bearNames = require("../db/bots/names/bearNames.json");
 const pmcTypes = require("../db/bots/pmcTypes.json");
 class BotLoader {
     constructor(logger, tables, configServ, modConf, arrays, utils) {
@@ -82,12 +80,12 @@ class BotLoader {
         }
     }
     botMeds() {
-        // this.arrays.nonScavBotArr.forEach(addBotMedkit);
-        // function addBotMedkit(bot) {
-        //     if (bot !== "assault" && bot !== "marskman" && bot.inventory.items.SecuredContainer) {
-        //         bot.inventory.items.SecuredContainer.push("SUPERBOTMEDKIT");
-        //     }
-        // }
+        this.arrays.botArr.forEach(addBotMedkit);
+        function addBotMedkit(bot) {
+            if (bot.inventory.items.SecuredContainer) {
+                bot.inventory.items.SecuredContainer.push("5e99735686f7744bfc4af32c");
+            }
+        }
     }
     forceBossSpawns() {
         for (let i in this.mapDB) {
@@ -98,26 +96,7 @@ class BotLoader {
             }
         }
     }
-    botNames() {
-        this.usecBase.firstName = USECNames.firstName;
-        this.usecBase.lastName = USECNames.lastName;
-        if (this.modConf.cyrillic_bear_names == false) {
-            this.bearBase.firstName = bearNames.firstName;
-            this.bearBase.lastName = bearNames.lastName;
-        }
-        if (this.modConf.cyrillic_bear_names == true) {
-            this.bearBase.firstName = bearNames.firstNameCyr;
-            this.bearBase.lastName = bearNames.lastNameCyr;
-        }
-        if (this.modConf.logEverything == true) {
-            this.logger.info("Bot Names Changed");
-        }
-    }
     botDifficulty() {
-        // if (this.modConf.pmc_difficulty == true) {
-        //     this.botConfPMC.useDifficultyOverride = true;
-        //     this.botConfPMC.difficulty = rmBotConfig.pmc2.difficulty;;
-        // }
         if (this.modConf.boss_difficulty == true) {
             for (let i in this.mapDB) {
                 if (this.mapDB[i].base?.BossLocationSpawn !== undefined) {
@@ -153,18 +132,8 @@ class BotLoader {
                 botType.skills.Common["Vitality"].min = 5100;
             }
         }
-        this.setBotHPHelper(this.arrays.standardBotHPArr);
-        if (this.modConf.realistic_boss_health == true) {
-            this.setBotHPHelper(this.arrays.bossBotArr);
-        }
-        if (this.modConf.realistic_boss_follower_health == true) {
-            this.setBotHPHelper(this.arrays.bossFollowerArr);
-        }
-        if (this.modConf.realistic_raider_rogue_health == true) {
-            this.setBotHPHelper(this.arrays.rogueRaiderList);
-        }
-        if (this.modConf.realistic_cultist_health == true) {
-            this.setBotHPHelper(this.arrays.cultistArr);
+        if (this.modConf.realistic_health == true) {
+            this.setBotHPHelper(this.arrays.botArr);
         }
     }
     setBotHPHelper(botArr) {
@@ -185,9 +154,7 @@ class BotLoader {
     }
     //this thing is demonic and cursed
     botHpMulti() {
-        this.botHPMultiHelper(this.arrays.standardBotHPArr, this.modConf.standard_bot_hp_multi);
-        this.botHPMultiHelper(this.arrays.midBotHPArr, this.modConf.mid_bot_hp_multi);
-        this.botHPMultiHelper(this.arrays.bossBotArr, this.modConf.boss_bot_hp_multi);
+        this.botHPMultiHelper(this.arrays.botArr, 1.0);
         if (this.modConf.logEverything == true) {
             this.logger.info("Killa chest health = " + this.botDB["bosskilla"].health.BodyParts[0].Chest.max);
             this.logger.info("Killa vitality = " + this.botDB["bosskilla"].skills.Common["Vitality"].min);
@@ -218,75 +185,6 @@ class BotLoader {
             }
         }
     }
-    botTest(tier) {
-        if (tier == 1) {
-            this.botConfig1();
-            this.scavLoad1();
-            this.rogueLoad1();
-            this.raiderLoad1();
-            this.goonsLoad1();
-            this.killaLoad1();
-            this.tagillaLoad1();
-            this.logger.warning("Tier 1 Test Selected");
-        }
-        if (tier == 2) {
-            this.botConfig2();
-            this.scavLoad2();
-            this.rogueLoad2();
-            this.raiderLoad2();
-            this.goonsLoad2();
-            this.killaLoad2();
-            this.tagillaLoad2();
-            this.logger.warning("Tier 2 Test Selected");
-        }
-        if (tier == 3) {
-            this.botConfig3();
-            this.scavLoad3();
-            this.rogueLoad3();
-            this.raiderLoad3();
-            this.goonsLoad3();
-            this.killaLoad3();
-            this.tagillaLoad3();
-            this.logger.warning("Tier 3 Test Selected");
-        }
-        if (tier == 4) {
-            this.botConfig3();
-            this.scavLoad3();
-            this.rogueLoad3();
-            this.raiderLoad3();
-            this.goonsLoad3();
-            this.killaLoad3();
-            this.tagillaLoad3();
-            this.logger.warning("Tier 4 Test Selected");
-        }
-        if (this.modConf.bot_test_weps_enabled == false) {
-            this.arrays.botArr.forEach(removeWeps);
-            function removeWeps(bot) {
-                bot.inventory.equipment.FirstPrimaryWeapon = [];
-                bot.inventory.equipment.Holster = [];
-                // bot.inventory.equipment.Backpack = [];
-            }
-            this.botConf.pmc.looseWeaponInBackpackChancePercent = 0;
-        }
-        if (this.modConf.all_scavs == true && this.modConf.all_PMCs == false) {
-            this.botConf.pmc.convertIntoPmcChance = rmBotConfig.scavTest.convertIntoPmcChance;
-            this.logger.warning("All Scavs");
-        }
-        if (this.modConf.all_scavs == false && this.modConf.all_PMCs == true) {
-            this.botConf.pmc.convertIntoPmcChance = rmBotConfig.pmcTest.convertIntoPmcChance;
-            this.logger.warning("All PMCs");
-        }
-        if (this.modConf.all_USEC == false && this.modConf.all_bear == true) {
-            this.botConf.pmc.convertIntoPmcChance = rmBotConfig.pmcTest.convertIntoPmcChance;
-            this.botConfPMC.isUsec = 0;
-            this.logger.warning("All Bear");
-        }
-        if (this.modConf.all_bear == false && this.modConf.all_USEC == true) {
-            this.botConf.pmc.convertIntoPmcChance = rmBotConfig.pmcTest.convertIntoPmcChance;
-            this.botConfPMC.isUsec = 100;
-            this.logger.warning("All USEC");
-        }
-    }
     botConfig1() {
         //Set bot armor and weapon min durability
         this.botConf.durability.pmc = rmBotConfig.durability1.pmc;
@@ -306,7 +204,7 @@ class BotLoader {
         this.botConfPMC.maxPocketLootTotalRub = rmBotConfig.pmc1.maxPocketLootTotalRub;
         this.botConfPMC.maxVestLootTotalRub = rmBotConfig.pmc1.maxVestLootTotalRub;
         //adjust PMC hostile chance
-        this.botConfPMC.chanceSameSideIsHostilePercent = this.modConf.bot_hostile1;
+        this.botConfPMC.chanceSameSideIsHostilePercent = 100;
         this.botConfPMC.looseWeaponInBackpackChancePercent = rmBotConfig.pmc1.looseWeaponInBackpackChancePercent;
         this.botConfPMC.isUsec = rmBotConfig.pmc1.isUsec;
         this.botConfPMC.convertIntoPmcChance = rmBotConfig.pmc1.convertIntoPmcChance;
@@ -376,7 +274,7 @@ class BotLoader {
         this.botConfPMC.maxPocketLootTotalRub = rmBotConfig.pmc2.maxPocketLootTotalRub;
         this.botConfPMC.maxVestLootTotalRub = rmBotConfig.pmc2.maxVestLootTotalRub;
         //adjust PMC hostile chance
-        this.botConfPMC.chanceSameSideIsHostilePercent = this.modConf.bot_hostile2;
+        this.botConfPMC.chanceSameSideIsHostilePercent = 100;
         this.botConfPMC.looseWeaponInBackpackChancePercent = rmBotConfig.pmc2.looseWeaponInBackpackChancePercent;
         this.botConfPMC.isUsec = rmBotConfig.pmc2.isUsec;
         this.botConfPMC.convertIntoPmcChance = rmBotConfig.pmc2.convertIntoPmcChance;
@@ -446,7 +344,7 @@ class BotLoader {
         this.botConfPMC.maxPocketLootTotalRub = rmBotConfig.pmc3.maxPocketLootTotalRub;
         this.botConfPMC.maxVestLootTotalRub = rmBotConfig.pmc3.maxVestLootTotalRub;
         //adjust PMC hostile chance
-        this.botConfPMC.chanceSameSideIsHostilePercent = this.modConf.bot_hostile3;
+        this.botConfPMC.chanceSameSideIsHostilePercent = 100;
         this.botConfPMC.looseWeaponInBackpackChancePercent = rmBotConfig.pmc3.looseWeaponInBackpackChancePercent;
         this.botConfPMC.isUsec = rmBotConfig.pmc3.isUsec;
         this.botConfPMC.convertIntoPmcChance = rmBotConfig.pmc3.convertIntoPmcChance;
