@@ -51,28 +51,28 @@ class BotGen extends BotGenerator_1.BotGenerator {
         var tier = 1;
         var tierArray = [1, 2, 3, 4];
         if (level >= 0 && level < 5) {
-            tier = utils.probabilityWeighter(tierArray, modConfig.botTierOdds1);
+            tier = utils.probabilityWeighter(tierArray, [92, 5, 2, 1]);
         }
         if (level >= 5 && level < 10) {
-            tier = utils.probabilityWeighter(tierArray, modConfig.botTierOdds2);
+            tier = utils.probabilityWeighter(tierArray, [82, 15, 2, 1]);
         }
         if (level >= 10 && level < 15) {
-            tier = utils.probabilityWeighter(tierArray, modConfig.botTierOdds3);
+            tier = utils.probabilityWeighter(tierArray, [38, 57, 4, 1]);
         }
         if (level >= 15 && level < 20) {
-            tier = utils.probabilityWeighter(tierArray, modConfig.botTierOdds4);
+            tier = utils.probabilityWeighter(tierArray, [10, 85, 4, 1]);
         }
         if (level >= 20 && level < 25) {
-            tier = utils.probabilityWeighter(tierArray, modConfig.botTierOdds5);
+            tier = utils.probabilityWeighter(tierArray, [8, 69, 21, 2]);
         }
         if (level >= 25 && level < 30) {
-            tier = utils.probabilityWeighter(tierArray, modConfig.botTierOdds6);
+            tier = utils.probabilityWeighter(tierArray, [5, 50, 40, 5]);
         }
         if (level >= 30 && level < 35) {
-            tier = utils.probabilityWeighter(tierArray, modConfig.botTierOdds7);
+            tier = utils.probabilityWeighter(tierArray, [5, 20, 70, 5]);
         }
         if (level >= 35) {
-            tier = utils.probabilityWeighter(tierArray, modConfig.botTierOdds8);
+            tier = utils.probabilityWeighter(tierArray, [3, 18, 64, 15]);
         }
         return tier;
     }
@@ -99,9 +99,6 @@ class BotGen extends BotGenerator_1.BotGenerator {
                 pmcTier = this.getBotTier(utils);
                 const isUSEC = this.isBotUSEC(botRole);
                 const changeDiffi = modConfig.pmc_difficulty;
-                if (modConfig.bot_testing == true) {
-                    pmcTier = modConfig.bot_test_tier;
-                }
                 if (pmcTier === 1) {
                     if (isUSEC) {
                         botLoader.usecLoad1(botJsonTemplate);
@@ -145,10 +142,6 @@ class BotGen extends BotGenerator_1.BotGenerator {
                     if (changeDiffi == true) {
                         bot.Info.Settings.BotDifficulty = "impossible";
                     }
-                }
-                if (modConfig.bot_testing == true && modConfig.bot_test_weps_enabled == false) {
-                    botJsonTemplate.inventory.equipment.FirstPrimaryWeapon = {};
-                    botJsonTemplate.inventory.equipment.Holster = {};
                 }
                 if (modConfig.logEverything == true) {
                     this.logger.warning("=================");
