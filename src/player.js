@@ -4,21 +4,19 @@ exports.Player = void 0;
 const enums_1 = require("./enums");
 const botHealth = require("../db/bots/botHealth.json");
 class Player {
-    constructor(logger, tables, modConfig, custProfile, medItems, helper) {
+    constructor(logger, tables, modConfig, utils) {
         this.logger = logger;
         this.tables = tables;
         this.modConfig = modConfig;
-        this.custProfile = custProfile;
-        this.medItems = medItems;
-        this.helper = helper;
+        this.utils = utils;
         this.globalDB = this.tables.globals.config;
         this.headHealth = botHealth.health.BodyParts[0].Head.max;
         this.chestHealth = botHealth.health.BodyParts[0].Chest.max;
         this.stomaHealth = botHealth.health.BodyParts[0].Stomach.max;
         this.armHealth = botHealth.health.BodyParts[0].RightArm.max;
         this.legHealth = botHealth.health.BodyParts[0].RightLeg.max;
-        this.hydration = 110;
-        this.energy = 130;
+        this.hydration = 100;
+        this.energy = 100;
         this.tempCurr = 30;
         this.tempMax = 30;
         this.defaultHeadHealth = this.tables.templates.profiles.Standard.bear.character.Health.BodyParts.Head.Health.Maximum;
@@ -46,20 +44,18 @@ class Player {
         this.setPlayerHealthHelper(scavData, true, true);
     }
     setPlayerHealth(pmcData, scavData) {
-        if (this.modConfig.realistic_player_health == false && this.modConfig.revert_hp == true) {
+        if (this.modConfig.realistic_health == false) {
             this.setPlayerHealthHelper(pmcData, true, false);
             this.setPlayerHealthHelper(scavData, true, false);
             if ((pmcData.Health.BodyParts["Chest"].Health.Current > pmcData.Health.BodyParts["Chest"].Health.Maximum) || (scavData.Health.BodyParts["Chest"].Health.Current > scavData.Health.BodyParts["Chest"].Health.Maximum)) {
                 this.setPlayerHealthHelper(pmcData, false, false);
                 this.setPlayerHealthHelper(scavData, false, false);
             }
-            this.modConfig.revert_hp = false;
-            this.helper.saveToJSONFile(this.modConfig, 'config/config.json');
             if (this.modConfig.logEverything == true) {
                 this.logger.info("Realism Mod: Player Health Reverted To Vanilla Defaults");
             }
         }
-        if (this.modConfig.realistic_player_health == true) {
+        if (this.modConfig.realistic_health == true) {
             this.setPlayerHealthHelper(pmcData, true, true);
             this.setPlayerHealthHelper(scavData, true, true);
             if (pmcData.Info.Experience == 0 || (pmcData.Health.BodyParts["Head"].Health.Current > this.headHealth || scavData.Health.BodyParts["Head"].Health.Current > this.headHealth)) {
@@ -206,12 +202,7 @@ class Player {
             this.globalDB.Health.Falling.SafeHeight = 2;
             this.globalDB.Stamina.SafeHeightOverweight = 1.7;
         }
-        if (this.modConfig.no_fall_damage == true) {
-            this.globalDB.Health.Falling.DamagePerMeter = 0;
-            this.globalDB.Health.Falling.SafeHeight = 1000;
-            this.globalDB.Stamina.SafeHeightOverweight = 10000;
-        }
-        if (this.modConfig.med_changes == true) {
+        if (this.modConfig.realistic_energy_and_hydration == true) {
             this.globalDB.Health.Effects.Existence.EnergyDamage = 1;
             this.globalDB.Health.Effects.Exhaustion.Damage = 0.5;
             this.globalDB.Health.Effects.Exhaustion.DefaultDelay = 60;
@@ -220,12 +211,12 @@ class Player {
             this.globalDB.Health.Effects.Dehydration.DamageOnStrongDehydration = 0.5;
             this.globalDB.Health.Effects.Dehydration.DefaultDelay = 60;
         }
-        if (this.modConfig.realistic_ballistics == true) {
+        if (this.modConfig.realistic_overdamage == true) {
             this.globalDB.LegsOverdamage *= 2;
             this.globalDB.HandsOverdamage *= 0.8;
             this.globalDB.StomachOverdamage *= 1.85;
         }
-        if (this.modConfig.realistic_player_health == true) {
+        if (this.modConfig.realistic_bleeding == true) {
             const health = this.globalDB.Health.Effects;
             const mult = 1.136;
             health.Wound.WorkingTime = 3600;
@@ -256,9 +247,6 @@ class Player {
         }
     }
     playerProfiles(jsonUtil) {
-        this.tables.templates.profiles["Realism Mod"] = jsonUtil.clone(this.tables.templates.profiles["Standard"]);
-        this.tables.templates.profiles["Realism Mod"].bear.character.Inventory = this.custProfile.BearInventory;
-        this.tables.templates.profiles["Realism Mod"].usec.character.Inventory = this.custProfile.USECInventory;
         for (let profile in this.tables.templates.profiles) {
             this.correctInventory(this.tables.templates.profiles[profile].bear.character.Inventory.items);
             this.correctInventory(this.tables.templates.profiles[profile].usec.character.Inventory.items);
@@ -266,12 +254,6 @@ class Player {
     }
     correctInventory(inventory) {
         for (let i in inventory) {
-            if (this.modConfig.med_changes == false) {
-                this.resetMedkitHP(inventory[i]);
-            }
-            else {
-                this.setMedkitHP(inventory[i]);
-            }
             if (this.modConfig.realistic_ballistics == true) {
                 this.setArmorDuabaility(inventory[i]);
             }
@@ -289,25 +271,6 @@ class Player {
                 invItem.upd.Repairable.Durability = this.tables.templates.items[i]._props.Durability;
                 invItem.upd.Repairable.MaxDurability = this.tables.templates.items[i]._props.Durability;
             }
-        }
-    }
-    resetMedkitHP(invItem) {
-        if (invItem._tpl === "TIER1MEDKIT" ||
-            invItem._tpl === "TIER2MEDKIT" ||
-            invItem._tpl === "TIER3MEDKIT") {
-            invItem._tpl = "5755356824597772cb798962";
-            invItem.upd.MedKit.HpResource = 100;
-        }
-    }
-    setMedkitHP(invItem) {
-        if (invItem._tpl === "TIER1MEDKIT") {
-            invItem.upd.MedKit.HpResource = this.medItems.TIER1MEDKIT.MaxHpResource;
-        }
-        if (invItem._tpl === "TIER2MEDKIT") {
-            invItem.upd.MedKit.HpResource = this.medItems.TIER2MEDKIT.MaxHpResource;
-        }
-        if (invItem._tpl === "TIER3MEDKIT") {
-            invItem.upd.MedKit.HpResource = this.medItems.TIER3MEDKIT.MaxHpResource;
         }
     }
 }
