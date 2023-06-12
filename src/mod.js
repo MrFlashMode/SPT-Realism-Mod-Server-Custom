@@ -39,7 +39,6 @@ const player_1 = require("./player");
 const weapons_globals_1 = require("./weapons_globals");
 const bots_1 = require("./bots");
 const bot_gen_1 = require("./bot_gen");
-const items_1 = require("./items");
 const code_gen_1 = require("./code_gen");
 const quests_1 = require("./quests");
 const traders_1 = require("./traders");
@@ -49,16 +48,11 @@ const gear_1 = require("./gear");
 const seasonalevents_1 = require("./seasonalevents");
 const item_cloning_1 = require("./item_cloning");
 const _path = __importStar(require("path"));
-const description_gen_1 = require("./description_gen");
 const json_handler_1 = require("./json-handler");
-const ammo_old_1 = require("./ammo_old");
-const armor_old_1 = require("./armor_old");
 const fs = require('fs');
 const custFleaBlacklist = require("../db/traders/ragfair/blacklist.json");
 const medItems = require("../db/items/med_items.json");
-const crafts = require("../db/items/hideout_crafts.json");
 const buffs = require("../db/items/buffs.json");
-const custProfile = require("../db/profile/profile.json");
 const modConfig = require("../config/config.json");
 var clientValidateCount = 0;
 class Main {
@@ -177,37 +171,30 @@ class Main {
                     const arrays = new arrays_1.Arrays(postLoadTables);
                     const utils = new utils_1.Utils(postLoadTables, arrays);
                     const tieredFlea = new fleamarket_1.TieredFlea(postLoadTables);
-                    const player = new player_1.Player(logger, postLoadTables, modConfig, custProfile, medItems, utils);
+                    const player = new player_1.Player(logger, postLoadTables, modConfig, utils);
                     const randomizeTraderAssort = new traders_1.RandomizeTraderAssort();
                     const pmcData = profileHelper.getPmcProfile(sessionID);
                     const scavData = profileHelper.getScavProfile(sessionID);
-                    const profileData = profileHelper.getFullProfile(sessionID);
                     let level = 1;
                     if (pmcData?.Info?.Level !== undefined) {
                         level = pmcData.Info.Level;
                         utils_1.ProfileTracker.level = level;
                     }
                     try {
-                        if (modConfig.backup_profiles == true) {
-                            this.backupProfile(profileData, logger);
-                        }
                         const healthProp = pmcData?.Health;
                         const hydroProp = pmcData?.Health?.Hydration;
                         if (healthProp !== undefined) {
                             player.correctNegativeHP(pmcData);
                             player.setPlayerHealth(pmcData, scavData);
                             if (hydroProp !== undefined) {
-                                if (modConfig.revert_med_changes == true && modConfig.med_changes == false) {
+                                if (modConfig.med_changes == false) {
                                     this.revertMeds(pmcData, utils);
                                     this.revertMeds(scavData, utils);
-                                    modConfig.revert_med_changes = false;
-                                    utils.saveToJSONFile(modConfig, 'config/config.json');
                                     logger.info("Realism Mod: Meds in Inventory/Stash Reverted To Defaults");
                                 }
                                 this.checkProfile(pmcData, pmcData.Info.Experience, utils, player, logger);
                                 this.checkProfile(scavData, pmcData.Info.Experience, utils, player, logger);
-                                if (modConfig.med_changes == false) {
-                                    utils.removeCustomItems(pmcData);
+                                if (modConfig.realistic_energy_and_hydration == false) {
                                     pmcData.Health.Hydration.Maximum = player.defaultHydration;
                                     pmcData.Health.Energy.Maximum = player.defaultEnergy;
                                     if (pmcData.Health.Energy.Current > pmcData.Health.Energy.Maximum) {
@@ -253,13 +240,13 @@ class Main {
                     const postLoadtables = postLoadDBServer.getTables();
                     const arrays = new arrays_1.Arrays(postLoadtables);
                     const utils = new utils_1.Utils(postLoadtables, arrays);
-                    const player = new player_1.Player(logger, postLoadtables, modConfig, custProfile, medItems, utils);
+                    const player = new player_1.Player(logger, postLoadtables, modConfig, utils);
                     const pmcData = profileHelper.getPmcProfile(sessionID);
                     const scavData = profileHelper.getScavProfile(sessionID);
                     try {
                         this.checkProfile(pmcData, pmcData.Info.Experience, utils, player, logger);
                         this.checkProfile(scavData, scavData.Info.Experience, utils, player, logger);
-                        if (modConfig.realistic_player_health == true) {
+                        if (modConfig.realistic_health == true) {
                             player.correctNewHealth(pmcData, scavData);
                         }
                         logger.info("Realism Mod: New Profile Modified");
@@ -375,7 +362,7 @@ class Main {
                     const arrays = new arrays_1.Arrays(postLoadTables);
                     const tieredFlea = new fleamarket_1.TieredFlea(postLoadTables);
                     const utils = new utils_1.Utils(postLoadTables, arrays);
-                    const player = new player_1.Player(logger, postLoadTables, modConfig, custProfile, medItems, utils);
+                    const player = new player_1.Player(logger, postLoadTables, modConfig, utils);
                     const pmcData = profileHelper.getPmcProfile(sessionID);
                     const scavData = profileHelper.getScavProfile(sessionID);
                     let level = 1;
@@ -387,7 +374,7 @@ class Main {
                             tieredFlea.updateFlea(logger, ragfairOfferGenerator, container, arrays, level);
                         }
                         player.correctNegativeHP(pmcData);
-                        if (modConfig.realistic_player_health == true) {
+                        if (modConfig.realistic_health == true) {
                             player.setNewScavHealth(scavData);
                         }
                         if (modConfig.logEverything == true) {
@@ -402,48 +389,6 @@ class Main {
                 }
             }
         ], "pmc");
-    }
-    backupProfile(profileData, logger) {
-        const profileFileData = JSON.stringify(profileData, null, 4);
-        var index = 0;
-        if (index == 0) {
-            index = 1;
-            var modPath = _path.join(__dirname, '..');
-            var profileFolderPath = modPath + "/ProfileBackups/";
-            var profileFilePath = modPath + "/ProfileBackups/" + profileData.info.id;
-            if (fs.existsSync(profileFilePath)) {
-                this.profileBackupHelper(profileFileData, profileFilePath, profileData, logger);
-            }
-            else {
-                fs.mkdir(_path.join(profileFolderPath, profileData.info.id), (err) => {
-                    if (err) {
-                        return console.error("Realism Mod: Error Backing Up Profile; " + err);
-                    }
-                    logger.log("Realism Mod: Backup path does not exist, creating folder....", "magenta");
-                });
-                this.profileBackupHelper(profileFileData, profileFilePath, profileData, logger);
-            }
-        }
-    }
-    profileBackupHelper(profileFileData, pathforProfile, profileData, logger) {
-        var date = new Date();
-        var time = date.toLocaleTimeString();
-        var edit_time = time.replaceAll(" ", "_");
-        var edit_time2 = edit_time.replaceAll(":", "-");
-        var day = date.toISOString().slice(0, 10);
-        var combinedTime = "_" + day + "_" + edit_time2;
-        var backupName = pathforProfile + "/" + profileData.info.id + combinedTime + ".json";
-        fs.writeFile(backupName, profileFileData, {
-            encoding: "utf8",
-            flag: "w",
-            mode: 0o666
-        }, (err) => {
-            if (err)
-                console.log("Realism Mod: Error Backing Up Profile; " + err);
-            else {
-                logger.log(`Realism Mod: Profile backup executed successfully: ${combinedTime}`, "green");
-            }
-        });
     }
     async postAkiLoadAsync(container) {
         const logger = container.resolve("WinstonLogger");
@@ -467,14 +412,11 @@ class Main {
         const utils = new utils_1.Utils(tables, arrays);
         const ammo = new ammo_1.Ammo(logger, tables, modConfig);
         const armor = new armor_1.Armor(logger, tables, modConfig);
-        const oldAmmo = new ammo_old_1.OldAmmo(logger, tables, modConfig);
-        const oldArmor = new armor_old_1.OldArmor(logger, tables, modConfig);
         const attachBase = new attatchment_base_1.AttatchmentBase(logger, tables, arrays, modConfig);
         const attachStats = new attatchment_stats_1.AttatchmentStats(logger, tables, modConfig, arrays);
         const bots = new bots_1.BotLoader(logger, tables, configServer, modConfig, arrays, utils);
-        const items = new items_1._Items(logger, tables, modConfig, inventoryConf);
         const meds = new meds_1.Meds(logger, tables, modConfig, medItems, buffs);
-        const player = new player_1.Player(logger, tables, modConfig, custProfile, medItems, utils);
+        const player = new player_1.Player(logger, tables, modConfig, utils);
         const weaponsGlobals = new weapons_globals_1.WeaponsGlobals(logger, tables, modConfig);
         const flea = new fleamarket_1.FleamarketGlobal(logger, tables, modConfig);
         const codegen = new code_gen_1.JsonGen(logger, tables, modConfig, utils, arrays);
@@ -484,27 +426,17 @@ class Main {
         const airdrop = new airdrops_1.Airdrops(logger, modConfig, airConf);
         const maps = new maps_1.Spawns(logger, tables, modConfig);
         const gear = new gear_1.Gear(arrays, tables);
-        const itemCloning = new item_cloning_1.ItemCloning(logger, tables, modConfig, jsonUtil, medItems, crafts);
-        const descGen = new description_gen_1.DescriptionGen(tables);
+        const itemCloning = new item_cloning_1.ItemCloning(logger, tables, modConfig, jsonUtil);
         const jsonHand = new json_handler_1.JsonHandler(tables);
         this.dllChecker(logger, modConfig);
-        if (modConfig.recoil_attachment_overhaul == true) {
-            itemCloning.createCustomWeapons();
-            itemCloning.createCustomAttachments();
-        }
-        // codegen.attTemplatesCodeGen();
-        // codegen.weapTemplatesCodeGen();
-        // codegen.gearTemplatesCodeGen();
-        // codegen.ammoTemplatesCodeGen();
-        if (modConfig.realistic_ballistics == true && modConfig.old_ballistics == false) {
+        if (modConfig.realistic_ballistics == true) {
             ammo.loadAmmoStats();
             armor.loadArmor();
-            bots.setBotHealth();
+			gear.loadHeadsetTweaks();
         }
         jsonHand.pushModsToServer();
         jsonHand.pushWeaponsToServer();
         jsonHand.pushArmorToServer();
-        descGen.descriptionGen();
         if (modConfig.armor_mouse_penalty == true) {
             armor.armorMousePenalty();
         }
@@ -520,27 +452,20 @@ class Main {
         }
         if (modConfig.bot_changes == true) {
             bots.loadBots();
+			bots.setBotHealth();
+			bots.botMeds();
         }
         if (modConfig.increased_bot_cap == true) {
             bots.increaseBotCap();
         }
-        if (modConfig.bot_names == true) {
-            bots.botNames();
-        }
         if (modConfig.guarantee_boss_spawn == true) {
             bots.forceBossSpawns();
         }
+		if (modConfig.med_changes == true) {
+			meds.loadCustomMeds();
+		}
         bots.botDifficulty();
-        if (modConfig.med_changes == true) {
-            itemCloning.createCustomMedItems();
-            // bots.botMeds();
-            meds.loadMeds();
-        }
-        if (modConfig.old_ballistics == true && modConfig.realistic_ballistics == false) {
-            oldAmmo.loadAmmoStatsOld();
-            oldArmor.loadArmorOld();
-            bots.setBotHealth();
-        }
+        meds.loadRequireMeds();
         bots.botHpMulti();
         custFleaConf.loadFleaConfig();
         flea.loadFleaGlobal();
@@ -557,12 +482,6 @@ class Main {
             attachStats.loadAttStats();
             ammo.grenadeTweaks();
         }
-        if (modConfig.headset_changes) {
-            gear.loadHeadsetTweaks();
-        }
-        if (modConfig.remove_quest_fir_req == true) {
-            quests.removeFIRQuestRequire();
-        }
         //traders
         if (modConfig.trader_changes == true) {
             traders.loadTraderTweaks();
@@ -570,16 +489,12 @@ class Main {
         if (modConfig.change_trader_ll == true) {
             traders.setLoyaltyLevels();
         }
-        if (modConfig.add_cust_trader_items == true) {
-            traders.addItemsToAssorts();
-        }
         traders.loadTraderRefreshTimes();
         //
         if (modConfig.bot_changes == true) {
             attachBase.loadAttRequirements();
         }
         attachBase.loadAttCompat();
-        items.loadItemsRestrictions();
         player.loadPlayerStats();
         player.playerProfiles(jsonUtil);
         weaponsGlobals.loadGlobalWeps();
@@ -614,7 +529,7 @@ class Main {
     }
     checkProfile(pmcData, pmcEXP, utils, player, logger) {
         utils.correctItemResources(pmcData, pmcEXP);
-        if (modConfig.med_changes == true) {
+        if (modConfig.realistic_energy_and_hydration == true) {
             pmcData.Health.Hydration.Maximum = player.hydration;
             pmcData.Health.Energy.Maximum = player.energy;
             if (pmcData.Info.Experience == 0) {
@@ -679,40 +594,40 @@ class Main {
             }
         }
     }
-    getBotTier(pmcData, bots, helper) {
-        this.setBotTier(pmcData, "scav", bots, helper);
-        this.setBotTier(pmcData, "raider", bots, helper);
-        this.setBotTier(pmcData, "rogue", bots, helper);
-        this.setBotTier(pmcData, "goons", bots, helper);
-        this.setBotTier(pmcData, "killa", bots, helper);
-        this.setBotTier(pmcData, "tagilla", bots, helper);
+    getBotTier(pmcData, bots, utils) {
+        this.setBotTier(pmcData, "scav", bots, utils);
+        this.setBotTier(pmcData, "raider", bots, utils);
+        this.setBotTier(pmcData, "rogue", bots, utils);
+        this.setBotTier(pmcData, "goons", bots, utils);
+        this.setBotTier(pmcData, "killa", bots, utils);
+        this.setBotTier(pmcData, "tagilla", bots, utils);
     }
     setBotTier(pmcData, type, bots, utils) {
         var tier = 1;
         var tierArray = [1, 2, 3, 4];
         if (pmcData.Info.Level >= 0 && pmcData.Info.Level < 5) {
-            tier = utils.probabilityWeighter(tierArray, modConfig.botTierOdds1);
+            tier = utils.probabilityWeighter(tierArray, [92, 5, 2, 1]);
         }
         if (pmcData.Info.Level >= 5 && pmcData.Info.Level < 10) {
-            tier = utils.probabilityWeighter(tierArray, modConfig.botTierOdds2);
+            tier = utils.probabilityWeighter(tierArray, [82, 15, 2, 1]);
         }
         if (pmcData.Info.Level >= 10 && pmcData.Info.Level < 15) {
-            tier = utils.probabilityWeighter(tierArray, modConfig.botTierOdds3);
+            tier = utils.probabilityWeighter(tierArray, [38, 57, 4, 1]);
         }
         if (pmcData.Info.Level >= 15 && pmcData.Info.Level < 20) {
-            tier = utils.probabilityWeighter(tierArray, modConfig.botTierOdds4);
+            tier = utils.probabilityWeighter(tierArray, [10, 85, 4, 1]);
         }
         if (pmcData.Info.Level >= 20 && pmcData.Info.Level < 25) {
-            tier = utils.probabilityWeighter(tierArray, modConfig.botTierOdds5);
+            tier = utils.probabilityWeighter(tierArray, [8, 69, 21, 2]);
         }
         if (pmcData.Info.Level >= 25 && pmcData.Info.Level < 30) {
-            tier = utils.probabilityWeighter(tierArray, modConfig.botTierOdds6);
+            tier = utils.probabilityWeighter(tierArray, [5, 50, 40, 5]);
         }
         if (pmcData.Info.Level >= 30 && pmcData.Info.Level < 35) {
-            tier = utils.probabilityWeighter(tierArray, modConfig.botTierOdds7);
+            tier = utils.probabilityWeighter(tierArray, [5, 20, 70, 5]);
         }
         if (pmcData.Info.Level >= 35) {
-            tier = utils.probabilityWeighter(tierArray, modConfig.botTierOdds8);
+            tier = utils.probabilityWeighter(tierArray, [3, 18, 64, 15]);
         }
         if (type === "tagilla") {
             if (tier == 1) {
@@ -799,7 +714,7 @@ class Main {
             }
         }
     }
-    updateBots(pmcData, logger, config, bots, helper) {
+    updateBots(pmcData, logger, modConfig, bots, utils) {
         var property = pmcData?.Info?.Level;
         if (property === undefined) {
             bots.botConfig1();
@@ -818,11 +733,7 @@ class Main {
             }
         }
         if (property !== undefined) {
-            if (config.bot_testing == true) {
-                bots.botTest(config.bot_test_tier);
-                logger.warning("Realism Mod: Bots Are In Test Mode");
-            }
-            if (config.bot_testing == false) {
+            if (modConfig.bot_testing == false) {
                 if (pmcData.Info.Level >= 0 && pmcData.Info.Level < 15) {
                     bots.botConfig1();
                 }
@@ -832,7 +743,7 @@ class Main {
                 if (pmcData.Info.Level >= 26) {
                     bots.botConfig3();
                 }
-                this.getBotTier(pmcData, bots, helper);
+                this.getBotTier(pmcData, bots, utils);
                 if (config.logEverything == true) {
                     logger.info("Realism Mod: Bot Tiers Have Been Set");
                 }
