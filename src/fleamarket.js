@@ -11,10 +11,7 @@ class FleamarketGlobal {
         this.globalDB = this.tables.globals.config;
     }
     loadFleaGlobal() {
-        if (this.modConfig.flea_changes == true && this.modConfig.tiered_flea != true) {
-            this.globalDB.RagFair.minUserLevel = 20;
-        }
-        if (this.modConfig.tiered_flea == true) {
+        if (this.modConfig.flea_changes == true) {
             this.globalDB.RagFair.minUserLevel = 1;
         }
     }
@@ -28,32 +25,12 @@ class FleamarketConfig {
         this.custFleaBlacklist = custFleaBlacklist;
     }
     loadFleaConfig() {
-        // if (this.modConfig.flea_changes == true || this.modConfig.tiered_flea == true) {
-        //     this.fleaConf.dynamic.blacklist.enableBsgList = true;
-        //     this.fleaConf.dynamic.blacklist.custom = this.custFleaBlacklist.blacklist.custom;
-        // }
-        if (this.modConfig.disable_flea_blacklist == true) {
-            this.fleaConf.dynamic.blacklist.enableBsgList = false;
-            this.fleaConf.dynamic.blacklist.custom = [];
-        }
-        // if (this.modConfig.med_changes == true) {
-        //     this.fleaConf.dynamic.blacklist.custom.push("TIER1MEDKIT", "TIER2MEDKIT", "TIER3MEDKIT");
-        // }
         if (this.modConfig.flea_changes == true) {
             this.fleaConf.dynamic.condition = custFleaConfig.condition;
-            this.fleaConf.sell.chance.base = 45;
-            this.fleaConf.sell.time.base = 30;
-            this.fleaConf.sell.time.min = 10;
-            this.fleaConf.sell.time.max = 30;
+            this.fleaConf.dynamic.blacklist.custom = this.custFleaBlacklist.blacklist.custom;
+            this.fleaConf.dynamic.barter.enable = false;
             this.fleaConf.sell.reputation.gain = 0.0000007;
             this.fleaConf.sell.reputation.loss = 0.0000007;
-            this.fleaConf.dynamic.currencies = {
-                "5449016a4bdc2d6f028b456f": 20,
-                "5696686a4bdc2da3298b456a": 40,
-                "569668774bdc2da2298b4568": 40
-            };
-            this.fleaConf.dynamic.offerItemCount.min = 0;
-            this.fleaConf.dynamic.offerItemCount.max = 2;
             this.fleaConf.dynamic.price.min = 1.3;
             this.fleaConf.dynamic.price.max = 2;
             this.fleaConf.dynamic.presetPrice.min = 1.3;
