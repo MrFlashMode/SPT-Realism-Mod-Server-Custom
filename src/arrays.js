@@ -161,19 +161,19 @@ class Arrays {
             this.botDB["followerkojaniy"],
             this.botDB["followersanitar"],
             this.botDB["followertagilla"],
-            this.botDB["followerzryachiy"],
+            this.botDB["followerzryachiy"]
         ];
         this.pmcList = [
             this.botDB["usec"],
-            this.botDB["bear"],
+            this.botDB["bear"]
         ];
         this.rogueRaiderList = [
             this.botDB["pmcbot"],
-            this.botDB["exusec"],
+            this.botDB["exusec"]
         ];
         this.cultistArr = [
             this.botDB["sectantwarrior"],
-            this.botDB["sectantpriest"],
+            this.botDB["sectantpriest"]
         ];
         this.standardBotHPArr = [
             this.botDB["marksman"],
