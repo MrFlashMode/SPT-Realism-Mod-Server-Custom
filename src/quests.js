@@ -7,7 +7,7 @@ class Quests {
         this.tables = tables;
         this.modConf = modConf;
         this.questDB = this.tables.templates.quests;
-        this.locales = this.tables.locales.global["en"];
+        this.locales = this.tables.locales.global["ru"];
     }
     fixMechancicQuests() {
 	    var descID = "";
