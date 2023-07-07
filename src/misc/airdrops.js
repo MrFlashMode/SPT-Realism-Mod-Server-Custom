@@ -1,10 +1,10 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.AirdropLootRequest = exports.AirdropLootgen = exports.Airdrops = void 0;
-const enums_1 = require("./enums");
+const enums_1 = require("../utils/enums");
 const LocationController_1 = require("C:/snapshot/project/obj/controllers/LocationController");
-const utils_1 = require("./utils");
-const arrays_1 = require("./arrays");
+const utils_1 = require("../utils/utils");
+const arrays_1 = require("../utils/arrays");
 class Airdrops {
     constructor(logger, modConfig, airConf) {
         this.logger = logger;
@@ -30,7 +30,7 @@ class Airdrops {
 exports.Airdrops = Airdrops;
 class AirdropLootgen extends LocationController_1.LocationController {
     myGetAirdropLoot() {
-        const modConfig = require("../config/config.json");
+        const modConfig = require("../../config/config.json");
         const tables = this.databaseServer.getTables();
         const arrays = new arrays_1.Arrays(tables);
         const utils = new utils_1.Utils(tables, arrays);
@@ -52,7 +52,7 @@ class AirdropLootgen extends LocationController_1.LocationController {
         return this.createRandomAirdropLoot(options, utils);
     }
     updateAirdropsLootPools(modConfig, utils, weights) {
-        const airdropLoot = require("../db/airdrops/airdrop_loot.json");
+        const airdropLoot = require("../../db/airdrops/airdrop_loot.json");
         var airdropLootArr = ["medical_loot", "provisions_loot", "materials_loot", "supplies_loot", "electronics_loot", "ammo_loot", "weapons_loot", "gear_loot", "tp"];
         var loot = utils.probabilityWeighter(airdropLootArr, weights);
         if (loot === "medical_loot") {

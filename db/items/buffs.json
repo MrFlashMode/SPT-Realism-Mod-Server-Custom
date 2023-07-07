@@ -124,7 +124,7 @@
             "BuffType": "Pain",
             "Chance": 1,
             "Delay": 0,
-            "Duration": 60,
+            "Duration": 40,
             "Value": 0,
             "AbsoluteValue": false,
             "SkillName": ""
@@ -133,7 +133,7 @@
             "BuffType": "MaxStamina",
             "Chance": 1,
             "Delay": 0,
-            "Duration": 60,
+            "Duration": 40,
             "Value": -10,
             "AbsoluteValue": true,
             "SkillName": ""
@@ -142,8 +142,8 @@
             "BuffType": "StaminaRate",
             "Chance": 1,
             "Delay": 0,
-            "Duration": 60,
-            "Value": -0.0835,
+            "Duration": 40,
+            "Value": -0.0625,
             "AbsoluteValue": true,
             "SkillName": ""
         },
@@ -200,7 +200,7 @@
             "BuffType": "Pain",
             "Chance": 1,
             "Delay": 0,
-            "Duration": 25,
+            "Duration": 60,
             "Value": 0,
             "AbsoluteValue": false,
             "SkillName": ""
@@ -209,7 +209,7 @@
             "BuffType": "Contusion",
             "Chance": 1,
             "Delay": 0,
-            "Duration": 2.5,
+            "Duration": 5,
             "Value": 1,
             "AbsoluteValue": false,
             "SkillName": ""
@@ -218,7 +218,7 @@
             "BuffType": "StaminaRate",
             "Chance": 1,
             "Delay": 0,
-            "Duration": 50,
+            "Duration": 60,
             "Value": -0.15,
             "AbsoluteValue": true,
             "SkillName": ""
@@ -267,7 +267,7 @@
             "BuffType": "Pain",
             "Chance": 1,
             "Delay": 0,
-            "Duration": 60,
+            "Duration": 40,
             "Value": 0,
             "AbsoluteValue": false,
             "SkillName": ""
@@ -276,7 +276,7 @@
             "BuffType": "HandsTremor",
             "Chance": 1,
             "Delay": 0,
-            "Duration": 60,
+            "Duration": 40,
             "Value": 0,
             "AbsoluteValue": false,
             "SkillName": ""
@@ -285,8 +285,8 @@
             "BuffType": "MaxStamina",
             "Chance": 1,
             "Delay": 0,
-            "Duration": 60,
-            "Value": -52.5,
+            "Duration": 40,
+            "Value": -32.5,
             "AbsoluteValue": true,
             "SkillName": ""
         },
@@ -294,8 +294,8 @@
             "BuffType": "StaminaRate",
             "Chance": 1,
             "Delay": 0,
-            "Duration": 60,
-            "Value": -0.125,
+            "Duration": 40,
+            "Value": -0.09375,
             "AbsoluteValue": true,
             "SkillName": ""
         }

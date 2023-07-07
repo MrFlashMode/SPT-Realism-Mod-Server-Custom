@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Armor = void 0;
-const enums_1 = require("./enums");
+const enums_1 = require("../utils/enums");
 class Armor {
     constructor(logger, tables, modConf) {
         this.logger = logger;
@@ -1011,6 +1011,83 @@ class Armor {
                 serverItem._props.DeafStrength = "None";
                 serverItem._props.ArmorMaterial = 'UHMWPE';
                 serverItem._props.Weight = 1.12;
+				serverItem._props.Slots = 
+				[
+					{
+						"_name": "mod_equipment_000",
+						"_id": "5f60b34a41e30a4ab12a6949",
+						"_parent": "5f60b34a41e30a4ab12a6947",
+						"_props": {
+							"filters": [
+							{
+								"Shift": 0,
+								"Filter": [
+								"5f60c076f2bcbb675b00dac2"
+								]
+							}
+						]
+					},
+						"_required": false,
+						"_mergeSlotWithChildren": false,
+						"_proto": "55d30c4c4bdc2db4468b457e"
+					},
+					{
+						"_name": "mod_nvg",
+						"_id": "5f60b34a41e30a4ab12a694a",
+						"_parent": "5f60b34a41e30a4ab12a6947",
+						"_props": {
+							"filters": [
+							{
+								"Shift": 0,
+								"Filter": [
+								"5f60bf4558eff926626a60f2",
+								"5c0558060db834001b735271",
+								"5a16b8a9fcdbcb00165aa6ca"
+								]
+							}
+						]
+					},
+						"_required": false,
+						"_mergeSlotWithChildren": false,
+						"_proto": "55d30c4c4bdc2db4468b457e"
+					},
+					{
+						"_name": "mod_equipment_001",
+						"_id": "5f60b34a41e30a4ab12a694b",
+						"_parent": "5f60b34a41e30a4ab12a6947",
+						"_props": {
+							"filters": [
+							{
+								"Shift": 0,
+								"Filter": [
+								"5a16b9fffcdbcb0176308b34"
+								]
+							}
+						]
+					},
+						"_required": false,
+						"_mergeSlotWithChildren": false,
+						"_proto": "55d30c4c4bdc2db4468b457e"
+					},
+					{
+						"_name": "mod_equipment_002",
+						"_id": "5f60b34a41e30a4ab12a694d",
+						"_parent": "5f60b34a41e30a4ab12a6947",
+						"_props": {
+							"filters": [
+							{
+								"Shift": 0,
+								"Filter": [
+								"5f60b85bbdb8e27dee3dc985"
+								]
+							}
+						]
+					},
+						"_required": false,
+						"_mergeSlotWithChildren": false,
+						"_proto": "55d30c4c4bdc2db4468b457e"
+					}
+				];
             }
             //// Class 5 ////
             //Ronin
@@ -1308,6 +1385,7 @@ class Armor {
                 serverItem._props.DeafStrength = "None";
                 serverItem._props.ArmorMaterial = 'Glass';
                 serverItem._props.Weight = 0.38;
+				serverItem._props.HasHinge = true;
             }
             //// Class 3 ////
             //Heavy Trooper mask

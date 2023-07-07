@@ -1,14 +1,13 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Player = void 0;
-const enums_1 = require("./enums");
-const botHealth = require("../db/bots/botHealth.json");
+const enums_1 = require("../utils/enums");
+const botHealth = require("../../db/bots/botHealth.json");
 class Player {
-    constructor(logger, tables, modConfig, utils) {
+    constructor(logger, tables, modConfig) {
         this.logger = logger;
         this.tables = tables;
         this.modConfig = modConfig;
-        this.utils = utils;
         this.globalDB = this.tables.globals.config;
         this.headHealth = botHealth.health.BodyParts[0].Head.max;
         this.chestHealth = botHealth.health.BodyParts[0].Chest.max;
@@ -133,7 +132,7 @@ class Player {
         this.globalDB.Stamina.AimConsumptionByPose["x"] = 0.05;
         this.globalDB.Stamina.AimConsumptionByPose["y"] = 0.3;
         this.globalDB.Stamina.AimConsumptionByPose["z"] = 1; //standing
-        if (this.modConfig.weight_limits_changes == true) {
+        if (this.modConfig.realistic_weight_limits == true) {
             this.globalDB.Stamina.WalkOverweightLimits["x"] = 55;
             this.globalDB.Stamina.WalkOverweightLimits["y"] = 70;
             this.globalDB.Stamina.BaseOverweightLimits["x"] = 24;
@@ -143,7 +142,7 @@ class Player {
             this.globalDB.Stamina.WalkSpeedOverweightLimits["x"] = 32;
             this.globalDB.Stamina.WalkSpeedOverweightLimits["y"] = 85;
         }
-        if (this.modConfig.movement_changes == true) {
+        if (this.modConfig.realistic_movement == true) {
             this.globalDB.WalkSpeed["x"] = 0.6;
             this.globalDB.WalkSpeed["y"] = 0.87;
             this.globalDB.SprintSpeed["x"] = 0.05;
@@ -197,9 +196,9 @@ class Player {
                 this.logger.info("Movement Changes Enabled");
             }
         }
-        if (this.modConfig.fall_damage_changes == true) {
+        if (this.modConfig.realistic_fall_damage == true) {
             this.globalDB.Health.Falling.DamagePerMeter = 11.5;
-            this.globalDB.Health.Falling.SafeHeight = 2;
+            this.globalDB.Health.Falling.SafeHeight = 2.1;
             this.globalDB.Stamina.SafeHeightOverweight = 1.7;
         }
         if (this.modConfig.realistic_energy_and_hydration == true) {

@@ -35,24 +35,24 @@ class Meds {
             ///Smeary stuff///
             //Vaseline
             if (serverItem._id === "5755383e24597772cb798966") {
-                serverItem._props.ConflictingItems.splice(0, 0, "SPTRM");
-                serverItem._props.ConflictingItems.splice(1, 0, "vas");
+                //serverItem._props.ConflictingItems.splice(0, 0, "SPTRM");
+                //serverItem._props.ConflictingItems.splice(1, 0, "vas");
             }
             //GoldenStar
             if (serverItem._id === "5751a89d24597722aa0e8db0") {
-                serverItem._props.ConflictingItems.splice(0, 0, "SPTRM");
-                serverItem._props.ConflictingItems.splice(1, 0, "vas");
+                //serverItem._props.ConflictingItems.splice(0, 0, "SPTRM");
+                //serverItem._props.ConflictingItems.splice(1, 0, "vas");
             }
             ///Surgery/
             //CMS
             if (serverItem._id === "5d02778e86f774203e7dedbe") {
-                serverItem._props.ConflictingItems.splice(0, 0, "SPTRM");
-                serverItem._props.ConflictingItems.splice(1, 0, "surg");
+                //serverItem._props.ConflictingItems.splice(0, 0, "SPTRM");
+                //serverItem._props.ConflictingItems.splice(1, 0, "surg");
             }
             //Surv12
             if (serverItem._id === "5d02797c86f774203f38e30a") {
-                serverItem._props.ConflictingItems.splice(0, 0, "SPTRM");
-                serverItem._props.ConflictingItems.splice(1, 0, "surg");
+                //serverItem._props.ConflictingItems.splice(0, 0, "SPTRM");
+                //serverItem._props.ConflictingItems.splice(1, 0, "surg");
             }
         }
 		if (this.modConf.logEverything == true) {
@@ -173,55 +173,61 @@ class Meds {
             ///Medkits///
             //AI-2
             if (serverItem._id === "5755356824597772cb798962") {
-				serverItem._parent = "5448f3a14bdc2d27728b4569";
+				//serverItem._parent = "5448f3a14bdc2d27728b4569";
                 serverItem._props.effects_health = this.medItems["AI-2"].effects_health;
                 serverItem._props.effects_damage = this.medItems["AI-2"].effects_damage;
-                serverItem._props.StimulatorBuffs = this.medItems["AI-2"].StimulatorBuffs;
+				//serverItem._props.AnimationVariantsNumber = this.medItems["AI-2"].AnimationVariantsNumber;
+                //serverItem._props.StimulatorBuffs = this.medItems["AI-2"].StimulatorBuffs;
 				serverItem._props.MaxHpResource = this.medItems["AI-2"].MaxHpResource;
 				serverItem._props.medUseTime = this.medItems["AI-2"].medUseTime;
             }
             //CAR
             if (serverItem._id === "590c661e86f7741e566b646a") {
-				serverItem._parent = "5448f3a14bdc2d27728b4569";
+				//serverItem._parent = "5448f3a14bdc2d27728b4569";
                 serverItem._props.effects_health = this.medItems["CAR"].effects_health;
                 serverItem._props.effects_damage = this.medItems["CAR"].effects_damage;
-                serverItem._props.StimulatorBuffs = this.medItems["CAR"].StimulatorBuffs;
+				//serverItem._props.AnimationVariantsNumber = this.medItems["CAR"].AnimationVariantsNumber;
+                //serverItem._props.StimulatorBuffs = this.medItems["CAR"].StimulatorBuffs;
 				serverItem._props.MaxHpResource = this.medItems["CAR"].MaxHpResource;
 				serverItem._props.medUseTime = this.medItems["CAR"].medUseTime;
             }
             //Salewa
             if (serverItem._id === "544fb45d4bdc2dee738b4568") {
-				serverItem._parent = "5448f3a14bdc2d27728b4569";
+				//serverItem._parent = "5448f3a14bdc2d27728b4569";
                 serverItem._props.effects_health = this.medItems["salewa"].effects_health;
                 serverItem._props.effects_damage = this.medItems["salewa"].effects_damage;
-                serverItem._props.StimulatorBuffs = this.medItems["salewa"].StimulatorBuffs;
+				//serverItem._props.AnimationVariantsNumber = this.medItems["salewa"].AnimationVariantsNumber;
+                //serverItem._props.StimulatorBuffs = this.medItems["salewa"].StimulatorBuffs;
 				serverItem._props.MaxHpResource = this.medItems["salewa"].MaxHpResource;
 				serverItem._props.medUseTime = this.medItems["salewa"].medUseTime;
             }
             //IFAK
             if (serverItem._id === "590c678286f77426c9660122") {
-				serverItem._parent = "5448f3a14bdc2d27728b4569";
+				//serverItem._parent = "5448f3a14bdc2d27728b4569";
                 serverItem._props.effects_health = this.medItems["IFAK"].effects_health;
                 serverItem._props.effects_damage = this.medItems["IFAK"].effects_damage;
-                serverItem._props.StimulatorBuffs = this.medItems["IFAK"].StimulatorBuffs;
+				//serverItem._props.AnimationVariantsNumber = this.medItems["IFAK"].AnimationVariantsNumber;
+                //serverItem._props.StimulatorBuffs = this.medItems["IFAK"].StimulatorBuffs;
 				serverItem._props.MaxHpResource = this.medItems["IFAK"].MaxHpResource;
 				serverItem._props.medUseTime = this.medItems["IFAK"].medUseTime;
             }
             //AFAK
             if (serverItem._id === "60098ad7c2240c0fe85c570a") {
-				serverItem._parent = "5448f3a14bdc2d27728b4569";
+				//serverItem._parent = "5448f3a14bdc2d27728b4569";
                 serverItem._props.effects_health = this.medItems["AFAK"].effects_health;
                 serverItem._props.effects_damage = this.medItems["AFAK"].effects_damage;
-                serverItem._props.StimulatorBuffs = this.medItems["AFAK"].StimulatorBuffs;
+				//serverItem._props.AnimationVariantsNumber = this.medItems["AFAK"].AnimationVariantsNumber;
+                //serverItem._props.StimulatorBuffs = this.medItems["AFAK"].StimulatorBuffs;
 				serverItem._props.MaxHpResource = this.medItems["AFAK"].MaxHpResource;
 				serverItem._props.medUseTime = this.medItems["AFAK"].medUseTime;
             }
             //Grizzly
             if (serverItem._id === "590c657e86f77412b013051d") {
-				serverItem._parent = "5448f3a14bdc2d27728b4569";
+				//serverItem._parent = "5448f3a14bdc2d27728b4569";
                 serverItem._props.effects_health = this.medItems["grizzly"].effects_health;
                 serverItem._props.effects_damage = this.medItems["grizzly"].effects_damage;
-                serverItem._props.StimulatorBuffs = this.medItems["grizzly"].StimulatorBuffs;
+				//serverItem._props.AnimationVariantsNumber = this.medItems["grizzly"].AnimationVariantsNumber;
+                //serverItem._props.StimulatorBuffs = this.medItems["grizzly"].StimulatorBuffs;
 				serverItem._props.MaxHpResource = this.medItems["grizzly"].MaxHpResource;
 				serverItem._props.medUseTime = this.medItems["grizzly"].medUseTime;
             }

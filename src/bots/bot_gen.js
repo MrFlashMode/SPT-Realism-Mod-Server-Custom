@@ -3,7 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.BotEquipGenHelper = exports.BotGenHelper = exports.CheckRequired = exports.BotWepGen = exports.BotInvGen = exports.BotGen = exports.GenBotLvl = void 0;
 const BotWeaponGenerator_1 = require("C:/snapshot/project/obj/generators/BotWeaponGenerator");
 const tsyringe_1 = require("C:/snapshot/project/node_modules/tsyringe");
-const utils_1 = require("./utils");
+const utils_1 = require("../utils/utils");
 const BotEquipmentModGenerator_1 = require("C:/snapshot/project/obj/generators/BotEquipmentModGenerator");
 const BotGeneratorHelper_1 = require("C:/snapshot/project/obj/helpers/BotGeneratorHelper");
 const BotGenerator_1 = require("C:/snapshot/project/obj/generators/BotGenerator");
@@ -11,13 +11,13 @@ const BotLevelGenerator_1 = require("C:/snapshot/project/obj/generators/BotLevel
 const BotInventoryGenerator_1 = require("C:/snapshot/project/obj/generators/BotInventoryGenerator");
 const ContextVariableType_1 = require("C:/snapshot/project/obj/context/ContextVariableType");
 const BaseClasses_1 = require("C:/snapshot/project/obj/models/enums/BaseClasses");
-const arrays_1 = require("./arrays");
+const arrays_1 = require("../utils/arrays");
 const bots_1 = require("./bots");
 const bot_loot_serv_1 = require("./bot_loot_serv");
 const EquipmentSlots_1 = require("C:/snapshot/project/obj/models/enums/EquipmentSlots");
-const modConfig = require("../config/config.json");
-const usecLO = require("../db/bots/loadouts/PMCs/usecLO.json");
-const bearLO = require("../db/bots/loadouts/PMCs/bearLO.json");
+const modConfig = require("../../config/config.json");
+const usecLO = require("../../db/bots/loadouts/PMCs/usecLO.json");
+const bearLO = require("../../db/bots/loadouts/PMCs/bearLO.json");
 class GenBotLvl extends BotLevelGenerator_1.BotLevelGenerator {
     genBotLvl(levelDetails, botGenerationDetails, bot) {
         const expTable = this.databaseServer.getTables().globals.config.exp.level.exp_table;
@@ -54,25 +54,25 @@ class BotGen extends BotGenerator_1.BotGenerator {
             tier = utils.probabilityWeighter(tierArray, [92, 5, 2, 1]);
         }
         if (level >= 5 && level < 10) {
-            tier = utils.probabilityWeighter(tierArray, [82, 15, 2, 1]);
+            tier = utils.probabilityWeighter(tierArray, [80, 17, 2, 1]);
         }
         if (level >= 10 && level < 15) {
-            tier = utils.probabilityWeighter(tierArray, [38, 57, 4, 1]);
+            tier = utils.probabilityWeighter(tierArray, [32, 60, 6, 2]);
         }
         if (level >= 15 && level < 20) {
-            tier = utils.probabilityWeighter(tierArray, [10, 85, 4, 1]);
+            tier = utils.probabilityWeighter(tierArray, [10, 77, 10, 3]);
         }
         if (level >= 20 && level < 25) {
-            tier = utils.probabilityWeighter(tierArray, [8, 69, 21, 2]);
+            tier = utils.probabilityWeighter(tierArray, [8, 58, 30, 4]);
         }
         if (level >= 25 && level < 30) {
-            tier = utils.probabilityWeighter(tierArray, [5, 50, 40, 5]);
+            tier = utils.probabilityWeighter(tierArray, [5, 39, 50, 6]);
         }
         if (level >= 30 && level < 35) {
-            tier = utils.probabilityWeighter(tierArray, [5, 20, 70, 5]);
+            tier = utils.probabilityWeighter(tierArray, [5, 17, 70, 8]);
         }
         if (level >= 35) {
-            tier = utils.probabilityWeighter(tierArray, [3, 18, 64, 15]);
+            tier = utils.probabilityWeighter(tierArray, [3, 10, 71, 16]);
         }
         return tier;
     }
@@ -350,7 +350,7 @@ class BotWepGen extends BotWeaponGenerator_1.BotWeaponGenerator {
             weaponWithModsArray = _botModGen.botModGen(sessionId, weaponWithModsArray, modPool, weaponWithModsArray[0]._id, weaponItemTemplate, modChances, ammoTpl, botRole, botLevel, modLimits, botEquipmentRole);
         }
         // Use weapon preset from globals.json if weapon isnt valid
-        if (!this.myIsWeaponValid(weaponWithModsArray)) {
+        if (!this.isWeaponValid(weaponWithModsArray)) {
             // Weapon is bad, fall back to weapons preset
             weaponWithModsArray = this.myGetPresetWeaponMods(weaponTpl, equipmentSlot, weaponParentId, weaponItemTemplate, botRole, pmcTier);
         }
@@ -374,7 +374,7 @@ class BotWepGen extends BotWeaponGenerator_1.BotWeaponGenerator {
             weaponTemplate: weaponItemTemplate
         };
     }
-    myIsWeaponValid(weaponItemArray) {
+    isWeaponValid(weaponItemArray) {
         const _checkRequired = new CheckRequired();
         for (const mod of weaponItemArray) {
             const modDbTemplate = this.itemHelper.getItem(mod._tpl)[1];
@@ -423,7 +423,7 @@ class BotWepGen extends BotWeaponGenerator_1.BotWeaponGenerator {
         var weaponPresets = [];
         try {
             let preset;
-            let presetFile = require(`../db/bots/loadouts/weaponPresets/${botRole}Presets.json`);
+            let presetFile = require(`../../db/bots/loadouts/weaponPresets/${botRole}Presets.json`);
             for (let presetObj in presetFile) {
                 if (presetFile[presetObj]._items[0]._tpl === weaponTpl) {
                     let presetTier = presetFile[presetObj]._name.slice(0, 1);

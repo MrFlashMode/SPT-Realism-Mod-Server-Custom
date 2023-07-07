@@ -9,25 +9,22 @@ class Quests {
         this.questDB = this.tables.templates.quests;
         this.locales = this.tables.locales.global["ru"];
     }
+    changeGunsmishRequirements(conditions, num) {
+        conditions[num]._props.ergonomics.compareMethod = ">=";
+        conditions[num]._props.ergonomics.value = -100;
+        conditions[num]._props.recoil.compareMethod = "<=";
+        conditions[num]._props.recoil.value = 100000;
+    }
     fixMechancicQuests() {
 	    var descID = "";
         var questDescs = [];
         for (let quest in this.questDB) {
             if (this.questDB[quest].QuestName.includes("Gunsmith")) {
-                let conditions = this.questDB[quest].conditions.AvailableForFinish[0];
+                let conditions = this.questDB[quest].conditions.AvailableForFinish;
+                for (let i = 0; i < conditions.length; i++) {
+                    this.changeGunsmishRequirements(conditions, i);
+                }
 				let descID = this.questDB[quest].description;
-                conditions._props.ergonomics.compareMethod = ">=";
-                conditions._props.ergonomics.value = -100;
-                conditions._props.recoil.compareMethod = "<=";
-                conditions._props.recoil.value = 100000;
-                //conditions._props.weight.compareMethod = "<=";
-                //conditions._props.weight.value = 10000;
-                //conditions._props.width.compareMethod = ">=";
-                //conditions._props.width.value = 0;
-                //conditions._props.height.compareMethod = ">=";
-                //conditions._props.height.value = 0;
-                //conditions._props.durability.compareMethod = "<=";
-                //conditions._props.durability.value = 200;
 				this.questDescHelper(questDescs, descID, "5ac23c6186f7741247042bad description", "Здравствуй, наёмник. Да, меня Механиком зовут. Давай к делу, ты хотел помочь? У меня сейчас своих дел невпроворот. Времени всегда мало, и программатор для ПЛК100 вышел из строя. Да еще эти заказы... Впрочем, к чему я тебе это говорю. Я собираю для клиентов специфические сборки оружия, и мне бы не помешала помощь. Собери мне дробовик МР-133, сам я его собрать не успею, скорее всего, да и запчастей не хватает. Требуется лазерный прицел и расширенный магазин. А, ну ещё чтобы места много не занимал, не больше 4 ячеек. Собери мне такой, а потом уже и о дальнейшей работе поговорим, договорились?");
                 this.questDescHelper(questDescs, descID, "5ac2426c86f774138762edfe description", "С ружьем ты не подвел, значит, умеешь что-то. Хотя, времени мне от этого особо не прибавилось. Все биржи горят, главное, чтобы паника не началась. Хотя план остается прежним, думаю, это ненадолго. Ладно, мне нужно работать. А ты попробуй достать АКС-74У. Нужен с цевьем Зенит Б-11, расширенным магазином на 60, но компактный, на 6 ячеек, не более. Прицельная дальность 100 или больше. И максимально легкий, конечно, 3.5 кг или меньше. Да, индексы тут не причем. Надеюсь, запомнил. Не задерживайся.");
                 this.questDescHelper(questDescs, descID, "5ac2428686f77412450b42bf description", "В детстве люди говорили, что важна не точка назначения, а путешествие. Но что, если точка назначения - это ты сам, то, что ты умеешь, как используешь свои рефлексы и сколько патронов у тебя в магазине? Это особенно чувствуется, когда ты должен выживать, цепляться зубами за этот мир. Ладно, к делу. Мне нужен МP5. С расширенным магазином на 50 патронов, глушителем, тактическим фонарем и прицельной дальностью больше 200. Вес не более 4 кг. И реши для себя, что важней - путешествие или цель.");

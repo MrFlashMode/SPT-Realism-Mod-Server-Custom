@@ -139,7 +139,7 @@
                 "value": -5
             },
             "Hydration": {
-                "value": -10
+                "value": -15
             }
 		},
         "effects_damage": {
@@ -196,6 +196,7 @@
                 "fadeOut": 0
             }
 		},
+		"AnimationVariantsNumber": 0,
 		"StimulatorBuffs": "Buffs_ai",
         "MaxHpResource": 200,
 		"hpResourceRate": 50,
@@ -204,6 +205,7 @@
     "CAR": {
         "effects_health": {},
         "effects_damage": {},
+		"AnimationVariantsNumber": 0,
 		"StimulatorBuffs": "Buffs_car",
         "MaxHpResource": 400,
 		"hpResourceRate": 25,
@@ -212,6 +214,7 @@
     "salewa": {
         "effects_health": {},
         "effects_damage": {},
+		"AnimationVariantsNumber": 0,
 		"StimulatorBuffs": "Buffs_salewa",
         "MaxHpResource": 800,
 		"hpResourceRate": 25,
@@ -220,6 +223,7 @@
     "IFAK": {
         "effects_health": {},
         "effects_damage": {},
+		"AnimationVariantsNumber": 0,
 		"StimulatorBuffs": "Buffs_ifak",
         "MaxHpResource": 400,
 		"hpResourceRate": 25,
@@ -228,6 +232,7 @@
     "AFAK": {
         "effects_health": {},
         "effects_damage": {},
+		"AnimationVariantsNumber": 0,
 		"StimulatorBuffs": "Buffs_afak",
         "MaxHpResource": 600,
 		"hpResourceRate": 25,
@@ -236,6 +241,7 @@
     "grizzly": {
         "effects_health": {},
         "effects_damage": {},
+		"AnimationVariantsNumber": 0,
 		"StimulatorBuffs": "Buffs_grizzly",
         "MaxHpResource": 2400,
 		"hpResourceRate": 125,
@@ -305,7 +311,7 @@
             }
         },
 		"StimulatorBuffs": "Buffs_cms",
-        "MaxHpResource": 3,
+        "MaxHpResource": 6,
 		"medUseTime": 15.5
     },
     "surv12": {
@@ -332,7 +338,7 @@
             }
         },
 		"StimulatorBuffs": "Buffs_surv12",
-        "MaxHpResource": 6,
+        "MaxHpResource": 12,
 		"medUseTime": 20
     }
 }

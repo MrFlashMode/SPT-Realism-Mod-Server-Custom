@@ -1,9 +1,9 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.WeaponsGlobals = void 0;
-const enums_1 = require("./enums");
-const utils_1 = require("./utils");
-const mastering = require("../db/items/mastering.json");
+const enums_1 = require("../utils/enums");
+const utils_1 = require("../utils/utils");
+const mastering = require("../../db/items/mastering.json");
 class WeaponsGlobals {
     constructor(logger, tables, modConf) {
         this.logger = logger;

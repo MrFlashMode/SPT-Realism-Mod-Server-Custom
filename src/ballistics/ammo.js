@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Ammo = void 0;
-const enums_1 = require("./enums");
+const enums_1 = require("../utils/enums");
 class Ammo {
     constructor(logger, tables, modConf) {
         this.logger = logger;
@@ -1062,7 +1062,7 @@ class Ammo {
                 serverItem._props.LightBleedingDelta = 0.37;
                 serverItem._props.ammoAccr = 13;
                 serverItem._props.ammoHear = 0;
-                serverItem._props.ammoRec = 15;
+                serverItem._props.ammoRec = 12;
                 serverItem._props.Weight = 0.0083;
                 if (this.modConf.malf_changes == true) {
                     serverItem._props.MalfMisfireChance = 0.3;
@@ -1085,7 +1085,7 @@ class Ammo {
                 serverItem._props.LightBleedingDelta = 0.35;
                 serverItem._props.ammoAccr = -10;
                 serverItem._props.ammoHear = 0;
-                serverItem._props.ammoRec = 22;
+                serverItem._props.ammoRec = 19;
                 serverItem._props.Weight = 0.0093;
                 if (this.modConf.malf_changes == true) {
                     serverItem._props.MalfMisfireChance = 0.3;
@@ -1108,7 +1108,7 @@ class Ammo {
                 serverItem._props.LightBleedingDelta = 0.38;
                 serverItem._props.ammoAccr = 10;
                 serverItem._props.ammoHear = 0;
-                serverItem._props.ammoRec = 18;
+                serverItem._props.ammoRec = 15;
                 if (this.modConf.malf_changes == true) {
                     serverItem._props.MalfMisfireChance = 0.22;
                     serverItem._props.MisfireChance = 0;
@@ -1220,7 +1220,7 @@ class Ammo {
                 serverItem._props.LightBleedingDelta = 0.65;
                 serverItem._props.ammoAccr = -15;
                 serverItem._props.ammoHear = 0;
-                serverItem._props.ammoRec = 10;
+                serverItem._props.ammoRec = 5;
                 if (this.modConf.malf_changes == true) {
                     serverItem._props.MalfMisfireChance = 1.5;
                     serverItem._props.MisfireChance = 0;
@@ -1242,7 +1242,7 @@ class Ammo {
                 serverItem._props.LightBleedingDelta = 0.73;
                 serverItem._props.ammoAccr = -10;
                 serverItem._props.ammoHear = 0;
-                serverItem._props.ammoRec = 15;
+                serverItem._props.ammoRec = 10;
                 if (this.modConf.malf_changes == true) {
                     serverItem._props.MalfMisfireChance = 0.5;
                     serverItem._props.MisfireChance = 0;
@@ -1264,7 +1264,7 @@ class Ammo {
                 serverItem._props.LightBleedingDelta = 0.53;
                 serverItem._props.ammoAccr = 5;
                 serverItem._props.ammoHear = 0;
-                serverItem._props.ammoRec = 0;
+                serverItem._props.ammoRec = -5;
                 if (this.modConf.malf_changes == true) {
                     serverItem._props.MalfMisfireChance = 0;
                     serverItem._props.MisfireChance = 0;
@@ -1286,7 +1286,7 @@ class Ammo {
                 serverItem._props.LightBleedingDelta = 0.55;
                 serverItem._props.ammoAccr = 0;
                 serverItem._props.ammoHear = 0;
-                serverItem._props.ammoRec = 8;
+                serverItem._props.ammoRec = 3;
                 if (this.modConf.malf_changes == true) {
                     serverItem._props.MalfMisfireChance = 0.1;
                     serverItem._props.MisfireChance = 0;
@@ -1308,7 +1308,7 @@ class Ammo {
                 serverItem._props.LightBleedingDelta = 0.41;
                 serverItem._props.ammoAccr = -10;
                 serverItem._props.ammoHear = 0;
-                serverItem._props.ammoRec = 20;
+                serverItem._props.ammoRec = 15;
                 if (this.modConf.malf_changes == true) {
                     serverItem._props.MalfMisfireChance = 0.6;
                     serverItem._props.MisfireChance = 0;
@@ -3363,6 +3363,9 @@ class Ammo {
                     serverItem._props.MalfMisfireChance = misfireChance;
                 }
             }
+            // if (serverItem._id === "5c07a8770db8340023300450") {
+            //     serverItem._props.Slots[2]._props.filters[0].Filter = this.itemDB["55d355e64bdc2d962f8b4569"]._props.Slots[2]._props.filters[0].Filter
+            // }
             //Kedr-B
             if (serverItem._id === "57f3c6bd24597738e730fa2f") {
                 if (this.modConf.malf_changes == true) {

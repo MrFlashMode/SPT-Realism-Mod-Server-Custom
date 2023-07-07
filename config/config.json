@@ -3,10 +3,9 @@
 	"realistic_bleeding":true,
 	"realistic_overdamage":true,
 	"realistic_energy_and_hydration":true,
-	
-	"movement_changes":true,
-	"weight_limits_changes":true,
-	"fall_damage_changes":true,
+	"realistic_fall_damage":true,
+	"realistic_movement":true,
+	"realistic_weight_limits":true,
 	
 	"realistic_ballistics":true,
 	"recoil_attachment_overhaul":true,
@@ -18,21 +17,21 @@
 	"med_changes":true,
 	
 	"bot_changes":true,
-	"increased_bot_cap":true,
 	"open_zones_fix":true,
 	"boss_spawns":true,
 	"spawn_waves":true,
 	"force_boss_items":true,
-	"pmc_types":false,
-	"pmc_difficulty":true,
+	"pmc_difficulty":false,
 	"boss_difficulty":true,
-	"guarantee_boss_spawn":false,
-	"dynamic_loot_bots":true,
+	"dynamic_loot_pmcs":true,
+	"dynamic_loot_scavs":true,
 	
 	"airdrop_changes":true,
 	
 	"flea_changes":true,
 	"tiered_flea":false,
+	
+	"nerf_fence":true,
 	
 	"trader_changes":true,
 	"trader_repair_changes":true,
@@ -48,5 +47,8 @@
 	"gear_preset":"Realism",
 	
 	"bot_testing":false,
+	"increased_bot_cap":false,
+	"pmc_types":false,
+	"guarantee_boss_spawn":false,
 	"logEverything":false
 }
